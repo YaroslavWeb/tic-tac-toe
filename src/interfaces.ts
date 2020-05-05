@@ -1,3 +1,6 @@
-export interface IMode {
-    size3X3: boolean
+export interface IPlayer {
+    readonly id :number
+    name        :string
+    show        :boolean
+    
 }

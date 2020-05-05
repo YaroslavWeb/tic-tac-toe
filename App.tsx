@@ -1,29 +1,22 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Field } from "./src/containers/Field";
-import { Status } from './src/containers/Status';
-import { IMode } from "./src/interfaces"
-import {Game} from './src/pages/Game'
-import { MainMenu } from './src/pages/MainMenu'
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { Game } from "./src/pages/Game";
+import { MainMenu } from "./src/pages/MainMenu";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-
-  const Stack = createStackNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
-
-
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen 
-      name = "MainMenu" 
-      component = {MainMenu}
-      options={{ title: 'Крестики нолики' }} />
-      <Stack.Screen name = "Game" component = {Game}/>
+        <Stack.Screen
+          name="MainMenu"
+          component={MainMenu}
+          options={{ title: "Крестики нолики" }}
+        />
+        <Stack.Screen name="Game" component={Game} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-

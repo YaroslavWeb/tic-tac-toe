@@ -6,51 +6,30 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { IMode } from "../interfaces";
 
 const winHeight = Dimensions.get("window").height;
 const winWidth = Dimensions.get("window").width;
-
 interface FieldProps {
-  mode: IMode;
+  field      : any[]
+  onItemPress: (row:any, col:any)=>void
 }
-const rows = 9;
-const cols = 9;
 
-export const Field: React.FC<FieldProps> = ({ mode }) => {
-  const [gameField, setGameField] = React.useState<any[]>([]);
-  const [curPl, setCurPl] = React.useState<Number>(1);
-  
-
-
-  const initializeField = () => {
-    let field: any[] = [];
-    for (let i = 0; i < rows; i++) {
-      field[i] = [];
-      for (let j = 0; j < cols; j++) {
-        field[i][j] = 0;
-      }
-    }
-    return field;
-  };
-  React.useEffect(() => {
-    setGameField(initializeField);
-  }, []);
+export const Field: React.FC<FieldProps> = ({ field, onItemPress }) => {
 
   const renderIcon = (row: any, col: any) => {
-    let val = gameField[row][col];
+    let val = field[row][col];
     switch (val) {
       case 1:
         return (
           <Image
-            style={styles.icon}
+            style={[styles.icon, getSizeIcon(field.length)]}
             source={require("../../assets/sprites/romb.png")}
           />
         );
       case -1:
         return (
           <Image
-            style={styles.icon}
+            style={[styles.icon, getSizeIcon(field.length)]}
             source={require("../../assets/sprites/treug.png")}
           />
         );
@@ -58,37 +37,51 @@ export const Field: React.FC<FieldProps> = ({ mode }) => {
         return false;
     }
   };
-  const onItemPress = (row: any, col: any) => {
-    setGameField((prev) => {
-      if (prev[row][col] == 0) prev[row][col] = curPl;
-      return prev;
-    });
-    setCurPl((prev) => {
-      switch (prev) {
-        case 1:
-          return -1;
-        default:
-          return 1;
-      }
-    });
+  const getSizeItem = (length: number) => {
+    if (length == 3) {
+      return {
+        width: winWidth / length - 20,
+        height: (winHeight * 0.6) / length - 20,
+      };
+    } else {
+      return {
+        width: winWidth / length - 10,
+        height: (winHeight * 0.6) / length - 10,
+      };
+    }
+  };
+  const getSizeIcon = (length: number) => {
+    if (length == 3) {
+      return {
+        width: winWidth / length - 20,
+        height: (winHeight * 0.6) / length - 20,
+      };
+    } else {
+      return {
+        width: winWidth / length - 5,
+        height: (winHeight * 0.6) / length - 5,
+      };
+    }
   };
 
   return (
     <View style={styles.field}>
       <View style={styles.section}>
-        {gameField.map((row, i) => {
+        {field.map((row, i) => {
           return (
             <View key={"row_" + i} style={styles.row}>
               {row.map((col: string, j: number) => {
                 return (
                   <TouchableOpacity
-                    disabled={gameField[i][j] != 0 ? true : false}
+                    disabled={field[i][j] != 0 ? true : false}
                     key={`${col}_${i}_${j}`}
                     onPress={() => {
                       onItemPress(i, j);
                     }}
                   >
-                    <View style={styles.item}>{renderIcon(i, j)}</View>
+                    <View style={[styles.item, getSizeItem(field.length)]}>
+                      {renderIcon(i, j)}
+                    </View>
                   </TouchableOpacity>
                 );
               })}
@@ -121,13 +114,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 2,
     padding: 17,
-    width: winWidth / cols - 20,
-    height: (winHeight * 0.6) / rows - 20,
+
     elevation: 2,
   },
   icon: {
     resizeMode: "contain",
-    width: winWidth / cols - 10,
-    height: (winHeight * 0.6) / rows - 10,
   },
 });
