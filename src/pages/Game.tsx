@@ -9,8 +9,6 @@ interface GameProps {
 }
 
 export const Game: React.FC<GameProps> = ({ route }) => {
-  console.log(route.params);
-  
   const navigation = useNavigation();
   const [gameField, setGameField] = React.useState(()=>initField(route.params.size));
   const [gameTurn, setGameTurn]= React.useState(1)
@@ -47,17 +45,27 @@ export const Game: React.FC<GameProps> = ({ route }) => {
       { cancelable: false }
     );
   }
-
+  const checkVectorDown = (field:[], i:number,j:number) =>{
+    for (let y = 0; y < 3; y++) {
+      if(field[y][j] == 1){
+        continue
+      }
+      return false
+    }
+    return true
+  }
   // Проверка победы, после заполнения ячейки
   const checkWin = (field:any) =>{
-    let sum = 0
+    let vector = 0
+    checkVectorDown(field,0,0)
     for (let i = 0; i < field.length; i++) {
-      for(let j = 0; j < field[i].length; j++){
-
-        // sum = field[i][j]+field[i+1][j]+field[i+2][j]
-        // sum === 3 ? gamePromt() : false
-      //   if(gameTurn === field[i][j] && (field[i][j] === field[i][j+1] && field[i][j] === field[i][j+2])) 
-      //     gamePromt()
+      for(let j = 0; j < field.length; j++){
+        if(gameTurn === field[i][j] && (field[i][j] === field[i][j+1] && field[i][j] === field[i][j+2])) 
+          gamePromt()
+        else if (gameTurn === field[i][j] && (field[i][j] === field[i+1][j] && field[i][j] === field[i+2][j]))
+          gamePromt()
+        else if (gameTurn === field[i][j] && (field[i][j] === field[i+1][j+1] && field[i][j] === field[i+2][j+2]))
+          gamePromt()
       }
     }
   }

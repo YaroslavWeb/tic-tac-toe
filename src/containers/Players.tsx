@@ -1,13 +1,5 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-  Switch,
-  Dimensions,
-} from "react-native";
+
 import { IPlayer } from "../interfaces";
 import { CardPlayer } from "../components/CardPlayer"
 import { CardAdd } from "../components/CardAdd"
@@ -41,23 +33,3 @@ export const Players: React.FC<PlayersProps> = ({ players, changeShow }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  player: {
-    borderWidth: 2,
-    marginRight: 2,
-    marginLeft: 2,
-    marginBottom: 5,
-    borderColor: "#0884DD",
-    borderRadius: 8,
-    height: "45%",
-    width: "48%",
-    marginTop: 5,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  text: {
-    textAlign: "center",
-    justifyContent: "center",
-  },
-});

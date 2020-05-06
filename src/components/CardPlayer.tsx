@@ -25,17 +25,14 @@ export const CardPlayer: React.FC<PlayersProps> = ({ player }) => {
 };
 const styles = StyleSheet.create({
   player: {
-    borderWidth: 2,
-    marginRight: 2,
-    marginLeft: 2,
-    marginBottom: 5,
+    borderWidth:2,
     borderColor: "#0884DD",
     borderRadius: 8,
-    height: "45%",
-    width: "48%",
-    marginTop: 5,
+    height: "23%",
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 4
   },
 
   text: {

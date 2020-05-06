@@ -13,7 +13,7 @@ export default function App() {
         <Stack.Screen
           name="MainMenu"
           component={MainMenu}
-          options={{ title: "Крестики нолики" }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen name="Game" component={Game} />
       </Stack.Navigator>
