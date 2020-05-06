@@ -9,12 +9,14 @@ interface GameProps {
 }
 
 export const Game: React.FC<GameProps> = ({ route }) => {
+  console.log(route.params);
+  
   const navigation = useNavigation();
-  const [gameField, setGameField] = React.useState(initField(route.params.modeSize));
+  const [gameField, setGameField] = React.useState(()=>initField(route.params.size));
   const [gameTurn, setGameTurn]= React.useState(1)
 
   const reloadGame = () =>{
-    setGameField(initField(route.params.modeSize))
+    setGameField(initField(route.params.size))
     setGameTurn(1)
   }
 
@@ -25,7 +27,7 @@ export const Game: React.FC<GameProps> = ({ route }) => {
       return prev;
     });
   };
- 
+  // Ход игрока фиксируется на поле
   const onItemPress = (row: any, col: any) => {
     setGameField((prev) => {
       if (prev[row][col] == 0) prev[row][col] = gameTurn;
@@ -35,22 +37,27 @@ export const Game: React.FC<GameProps> = ({ route }) => {
     changeTurn()
   };
 
-  const _twoOptionAlertHandler = ()=>{
+  // Окно для выхода либо повтора игры 
+  const gamePromt = ()=>{
     Alert.alert('Победа!', 'Можем повторить?',
       [
-        {text: 'Нет', onPress: () => navigation.goBack(), style: 'cancel'},
+        {text: 'Нет', onPress: () => navigation.goBack()},
         {text: 'Да', onPress: () => reloadGame()},
       ],
       { cancelable: false }
-      //clicking out side of alert will not cancel
     );
   }
 
+  // Проверка победы, после заполнения ячейки
   const checkWin = (field:any) =>{
+    let sum = 0
     for (let i = 0; i < field.length; i++) {
       for(let j = 0; j < field[i].length; j++){
-        if(gameTurn === field[i][j] && (field[i][j] === field[i][j+1] && field[i][j] === field[i][j+2])) 
-        _twoOptionAlertHandler()
+
+        // sum = field[i][j]+field[i+1][j]+field[i+2][j]
+        // sum === 3 ? gamePromt() : false
+      //   if(gameTurn === field[i][j] && (field[i][j] === field[i][j+1] && field[i][j] === field[i][j+2])) 
+      //     gamePromt()
       }
     }
   }

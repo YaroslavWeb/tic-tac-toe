@@ -9,20 +9,26 @@ import {
 } from "react-native";
 import { Players } from "../containers/Players";
 import { useNavigation } from "@react-navigation/native";
-import { IPlayer } from "../interfaces";
+import { IPlayer, IMode } from "../interfaces";
 
-const winHeight = Dimensions.get("window").height;
 const winWidth = Dimensions.get("window").width;
 
-export function MainMenu() {
+export const MainMenu = () => {
   const navigation = useNavigation();
-  const [modeSize, setModeSize] = React.useState(false);
+  const [mode, setMode] = React.useState<IMode>({
+    size:false
+  })
+  // const [modeSize, setModeSize] = React.useState(false);
   const [players, setPlayers] = React.useState<IPlayer[]>([
     { id: 1, name: "Игрок №1", show: true },
     { id: 2, name: "Игрок №2", show: true },
     { id: 3, name: "Игрок №3", show: false },
     { id: 4, name: "Игрок №4", show: false },
   ]);
+
+  const switchSize = () => {
+    setMode(prev=> {return {...prev, size:!prev.size}})
+  }
 
   const changeShow = (id: number) => {
     setPlayers((prev) =>
@@ -50,9 +56,9 @@ export function MainMenu() {
           <Text>3x3</Text>
           <Switch
             trackColor={{ false: "#60DDD7", true: "#60DDD7" }}
-            thumbColor={modeSize ? "#0884DD" : "#0884DD"}
-            onValueChange={() => setModeSize((prev) => !prev)}
-            value={modeSize}
+            thumbColor={mode.size ? "#0884DD" : "#0884DD"}
+            onValueChange={switchSize}
+            value={mode.size}
           />
           <Text>9x9</Text>
         </View>
@@ -60,7 +66,7 @@ export function MainMenu() {
 
       <View style={styles.actions}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Game", { modeSize })}
+          onPress={() => navigation.navigate("Game", mode)}
         >
           <View style={styles.button}>
             <Text style={styles.text}>Начать игру</Text>
@@ -71,8 +77,6 @@ export function MainMenu() {
       <View
         style={{
           flexDirection: "row",
-          borderWidth: 3,
-          borderColor: "#0884DD",
           justifyContent: "center",
           flexWrap: "wrap",
           height: "40%",
