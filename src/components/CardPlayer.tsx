@@ -13,20 +13,32 @@ import { getSprite } from "../../assets/assets";
 import { IPlayer } from "../interfaces";
 import { GS, COLORS } from "../styles/global";
 
-let dimensions = Dimensions.get("window");
 interface PlayersProps {
   player: IPlayer;
-  togglePlayer: (id: number) => void;
+  togglePlayer: (id: number, type: number) => void
+  getCharacter: (id: number, figure: number) => void
 }
 
+let dimensions = Dimensions.get("window");
 export const CardPlayer: React.FC<PlayersProps> = ({
   player,
   togglePlayer,
+  getCharacter
 }) => {
   const [character, setCharacter] = React.useState(1);
   const [intervals, setIntervals] = React.useState(
     getSprite[`pl${player.id}`].length
   );
+  React.useEffect(()=>{
+    getCharacter(player.id, character)
+  }, [character])
+
+  const getType = (type: number) => {
+    if (type === 1)
+      return require("../../assets/control/Pl.png");
+    return require("../../assets/control/Ai.png");
+  }
+
   let bullets: any = [];
   for (let i = 1; i <= intervals; i++) {
     bullets.push(
@@ -41,26 +53,31 @@ export const CardPlayer: React.FC<PlayersProps> = ({
       </Text>
     );
   }
+
   return (
     <View
-      style={[styles.card, GS.border, { backgroundColor: COLORS[`PL${player.id}_second`]}]}
+      style={[styles.card, GS.border, { backgroundColor: COLORS[`PL${player.id}_second`] }]}
     >
       <View style={[styles.status]}>
         <View
           style={[
             GS.border,
             {
-              backgroundColor:COLORS[`PL${player.id}`],
-              paddingHorizontal: 6,
+              backgroundColor: COLORS[`PL${player.id}`],
+              paddingHorizontal: 2,
+              flexDirection: 'row'
             },
           ]}
         >
-          <Text style={[GS.textRegular, GS.textSmall]}>{player.id}</Text>
+          <Image
+            style={{ width: 20, height: 20, resizeMode: 'stretch' }}
+            source={getType(player.type)}
+          />
         </View>
         <View style={styles.bullets}>{bullets}</View>
-        <TouchableOpacity onPress={() => togglePlayer(player.id)}>
+        <TouchableOpacity onPress={() => togglePlayer(player.id, 0)}>
           <Image
-            style={{ width: 22, height: 22}}
+            style={{ width: 22, height: 22 }}
             source={require("../../assets/control/remove.png")}
           />
         </TouchableOpacity>
@@ -73,7 +90,7 @@ export const CardPlayer: React.FC<PlayersProps> = ({
           onScroll={(data) =>
             setCharacter(
               Math.floor(
-                data.nativeEvent.contentOffset.x /Math.round(dimensions.width * 0.5 - 33)+1
+                data.nativeEvent.contentOffset.x / Math.round(dimensions.width * 0.5 - 33) + 1
               )
             )
           }
@@ -117,7 +134,7 @@ const styles = StyleSheet.create({
   },
   bullets: {
     justifyContent: "center",
-    alignSelf:'center',
+    alignSelf: 'center',
     flexDirection: "row",
   },
   bullet: {

@@ -59,7 +59,6 @@ export const Board: React.FC<FieldProps> = ({ grid, onBoxPress }) => {
 
 const styles = StyleSheet.create({
   field: {
-    backgroundColor: "#DCEFE9",
     height: winHeight * 0.7,
     padding: 10,
     alignItems: "center",

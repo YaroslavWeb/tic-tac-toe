@@ -1,7 +1,7 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { GS } from "../../styles/global";
-
+import { Info } from "../Info"
 interface RuleProps {
   getOptBg: (val: boolean) => any;
   toggleRule: () => void;
@@ -9,9 +9,19 @@ interface RuleProps {
 }
 
 export const Rule: React.FC<RuleProps> = ({ getOptBg, rule, toggleRule }) => {
+  const [infoVisible, setInfoVisible] = React.useState(false);
+  const toggleInfo = () => {
+    setInfoVisible(prev=> !prev)
+  }
   return (
     <View style={[styles.optItem, GS.border, GS.bgOptions]}>
-      <Text style={[GS.textRegular, GS.textBig]}>Правила</Text>
+      <Info infoVisible = {infoVisible} toggleInfo = {toggleInfo}/>
+      <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+        <Text style={[GS.textRegular, GS.textBig]}>Правила</Text>
+        <TouchableOpacity style={{alignSelf:'center'}} onPress={toggleInfo}>
+          <Image style={{width:24, height:24, resizeMode:'stretch'}} source={require('../../../assets/control/question.png')}/>
+        </TouchableOpacity>
+      </View>
       <View style={styles.switchRule}>
         <TouchableOpacity
           disabled={!rule}

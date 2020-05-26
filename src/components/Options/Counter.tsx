@@ -23,7 +23,7 @@ export const Counter: React.FC<CounterProps> = ({ count, incCount, decCount }) =
         <Text style={[GS.textRegular, GS.textLarge]}>{count}</Text>
 
         <TouchableOpacity
-          disabled={count >= 6}
+          disabled={count >= 5}
           onPress={incCount}
           style={[styles.btnCounter, GS.border]}
         >

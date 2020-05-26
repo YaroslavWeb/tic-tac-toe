@@ -2,6 +2,7 @@ import * as React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import { getSprite } from "../../assets/assets";
+import { GS } from "../styles/global";
 
 interface RowProps {
   boxes: [];
@@ -29,11 +30,11 @@ export const Row: React.FC<RowProps> = ({
               onBoxPress(index, jndex);
             }}
           >
-            <View style={[styles.box, getSizeBox()]}>
+            <View style={[styles.box, GS.border, GS.bgDisabled, getSizeBox()]}>
               {col !== 0 ? (
                 <Image
                   style={[{ resizeMode: "contain" }, getSizeIcon()]}
-                  source={getSprite[`pl${col}`]}
+                  source={getSprite[`pl${col}`][0]}
                 />
               ) : (
                 false
@@ -50,15 +51,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   box: {
-    backgroundColor: "#B2DCD7",
-    borderColor: "#77A29F",
-    borderWidth: 1,
-    borderRadius: 4,
     justifyContent: "center",
     alignItems: "center",
-    margin: 2,
+    margin: 1,
     padding: 17,
-
     elevation: 2,
   },
 });

@@ -14,7 +14,6 @@ export const Status: React.FC = () => {
 
 const styles = StyleSheet.create({
   status: {
-    backgroundColor:'#fff',
     height: winHeight * 0.2,
   },
 });

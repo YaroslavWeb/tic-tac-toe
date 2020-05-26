@@ -7,5 +7,7 @@ export interface IMode {
 
 export interface IPlayer {
     readonly id :number
-    show        :boolean
+    type        :number
+    active      :boolean
+    character   :number
 }

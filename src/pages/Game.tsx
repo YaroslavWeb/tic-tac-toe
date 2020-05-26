@@ -1,15 +1,18 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, ImageBackground } from "react-native";
+
 import { Board } from "../containers/Board";
 import { Status } from "../containers/Status";
 import { initBoard, checkWin } from "../engine";
+
 interface GameProps {
   route: any;
 }
 
 export const Game: React.FC<GameProps> = ({ route }) => {
   const [grid, setGrid] = React.useState(() => initBoard(route.params.size));
-  const [players, setPlayers] = React.useState(2)
+  const [players, setPlayers] = React.useState(route.params.players)
+  const [vector] = React.useState(!route.params.size ? 3 : route.params.count)
   const [turn, setTurn] = React.useState(1);
 
   const restartGame = () => {
@@ -29,23 +32,25 @@ export const Game: React.FC<GameProps> = ({ route }) => {
   const onBoxPress = (row: any, col: any) => {
     setGrid((prev) => {
       if (prev[row][col] == 0) prev[row][col] = turn;
-      checkWin(prev, turn) ? restartGame() : false;
+      checkWin(prev, col, row, turn, vector) ? restartGame() : false;
       return prev;
     });
     changeTurn();
   };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require("../../assets/bg.png")}
+      style={styles.container}
+    >
       <Board grid={grid} onBoxPress={onBoxPress} />
       <Status />
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
   },
 });
